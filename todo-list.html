@@ -1,0 +1,110 @@
+
+
+<div class="p-6 max-w-2xl mx-auto">
+
+  <!-- Search Bar -->
+  <input
+    type="text"
+    [(ngModel)]="searchText"
+    placeholder="Search..."
+    class="w-full mb-4 p-2 border rounded"
+  />
+
+  <!-- Todo Form -->
+  <form (ngSubmit)="addOrUpdateTodo()" class="grid grid-cols-1 gap-4 bg-gray-100 p-4 rounded">
+
+    <input
+      type="text"
+      placeholder="Title"
+      [(ngModel)]="todo.title"
+      name="title"
+      class="p-2 border rounded"
+      required
+    />
+
+    <textarea
+      placeholder="Description"
+      [(ngModel)]="todo.description"
+      name="description"
+      class="p-2 border rounded"
+      rows="3"
+      required
+    ></textarea>
+
+    <input
+      type="date"
+      [(ngModel)]="todo.dueDate"
+      name="dueDate"
+      class="p-2 border rounded"
+      required
+    />
+
+    <select
+      [(ngModel)]="todo.status"
+      name="status"
+      class="p-2 border rounded"
+      required
+    >
+      <option value="Pending">Pending</option>
+      <option value="In-Progress">In-Progress</option>
+      <option value="Complete">Complete</option>
+    </select>
+
+    <button class="bg-blue-600 text-white p-2 rounded hover:bg-blue-700">
+      {{ editMode ? 'Update Todo' : 'Add Todo' }}
+    </button>
+
+  </form>
+
+  <!-- Todo Table -->
+  <table class="w-full mt-6 border">
+    <thead class="bg-gray-200">
+      <tr>
+        <th class="p-2 border">Title</th>
+        <th class="p-2 border">Description</th>
+        <th class="p-2 border">Due Date</th>
+        <th class="p-2 border">Status</th>
+        <th class="p-2 border">Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr
+        *ngFor="let item of filteredTodos()"
+        class="border hover:bg-gray-100"
+      >
+        <td class="p-2 border">{{ item.title }}</td>
+        <td class="p-2 border">{{ item.description }}</td>
+        <td class="p-2 border">{{ item.dueDate }}</td>
+        <td class="p-2 border">{{ item.status }}</td>
+
+
+<!-- @for (todo of todos; track todo.id) {
+  <tr>
+    <td>{{ todo.title }}</td>
+    <td>{{ todo.description }}</td>
+    <td>{{ todo.dueDate }}</td>
+    <td>{{ todo.status }}</td>
+  </tr> -->
+<!-- //} -->
+
+        <td class="p-2 border flex gap-2">
+          <button
+            class="bg-yellow-500 text-white px-3 py-1 rounded"
+            (click)="editTodo(item)"
+          >
+            Edit
+          </button>
+
+          <button
+            class="bg-red-600 text-white px-3 py-1 rounded"
+            (click)="deleteTodo(item)"
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
