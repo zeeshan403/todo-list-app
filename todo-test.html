@@ -1,0 +1,146 @@
+<!-- <p>todo-test works!</p> -->
+
+
+<div class="p-6 max-w-xl mx-auto">
+<h1 class="ml-55 text-2xl"> Todo List App </h1>
+  <!-- Search Bar -->
+  <input
+    type="text"
+    [(ngModel)]="searchText"
+    class="w-full p-2 border rounded mb-4 mt-3"
+    placeholder="Search..."
+  />
+
+  <!-- Add Button -->
+  <button
+    class="bg-blue-600 text-white px-4 py-2 rounded mb-4"
+    (click)="openModal()"
+  >
+    + Add Todo
+  </button>
+
+  <!-- Todo Table -->
+  <table class="w-full border">
+    <thead class="bg-gray-200">
+      <tr>
+        <th class="border p-2">Title</th>
+        <th class="border p-2">Description</th>
+        <th class="border p-2">Due Date</th>
+        <th class="border p-2">Status</th>
+        <th class="border p-2">Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let t of filteredTodos" class="hover:bg-gray-100">
+        <td class="border p-2">{{ t.title }}</td>
+        <td class="border p-2">{{ t.description }}</td>
+        <td class="border p-2">{{ t.dueDate }}</td>
+        <td class="border p-2">{{ t.status }}</td>
+
+        <td class="border p-2 space-x-2">
+          <button class="bg-yellow-500 text-white px-3 py-1 rounded"
+                  (click)="editModal(t)">
+            Edit
+          </button>
+
+          <button class="bg-red-600 text-white px-3 py-1 rounded"
+                  (click)="openDeleteModal(t)">
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <!-- ───── Modal: Add/Edit ───── -->
+  <div *ngIf="showModal"
+       class="fixed inset-0 bg-black/50 flex justify-center items-center">
+
+    <div class="bg-white p-6 rounded shadow-xl w-96">
+
+      <h2 class="text-xl font-bold mb-4">
+        {{ todo.id === 0 ? 'Add Todo' : 'Edit Todo' }}
+      </h2>
+
+      <form (ngSubmit)="saveTodo()" class="space-y-3">
+
+        <input class="w-full p-2 border rounded"
+               type="text"
+               placeholder="Title"
+               [(ngModel)]="todo.title"
+               name="title"
+               required />
+
+        <textarea class="w-full p-2 border rounded"
+                  placeholder="Description"
+                  [(ngModel)]="todo.description"
+                  name="description"
+                  rows="3"
+                  required></textarea>
+
+        <input class="w-full p-2 border rounded"
+               type="date"
+               [(ngModel)]="todo.dueDate"
+               name="dueDate"
+               required>
+
+        <select class="w-full p-2 border rounded"
+                [(ngModel)]="todo.status"
+                name="status">
+          <option value="Pending">Pending</option>
+          <option value="In-Progress">In-Progress</option>
+          <option value="Complete">Complete</option>
+        </select>
+
+        <div class="flex justify-end gap-2 mt-4">
+          <button type="button"
+                  class="px-4 py-2 border rounded"
+                  (click)="showModal=false">
+            Cancel
+          </button>
+
+          <button class="px-4 py-2 bg-blue-600 text-white rounded">
+            Save
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+
+  <!-- ───── Delete Modal ───── -->
+  <div *ngIf="showDeleteModal"
+       class="fixed inset-0 bg-black/50 flex justify-center items-center">
+
+    <div class="bg-white p-6 w-80 rounded shadow-xl">
+
+      <h2 class="text-xl font-semibold mb-4">
+        Delete this Todo?
+      </h2>
+
+      <p class="mb-4">
+        Are you sure you want to delete "{{ selectedTodo.title }}"?
+      </p>
+
+      <div class="flex justify-end gap-2">
+        <button class="px-4 py-2 border rounded"
+                (click)="showDeleteModal=false">
+          Cancel
+        </button>
+
+        <button class="px-4 py-2 bg-red-600 text-white rounded"
+                (click)="confirmDelete()">
+          Delete
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
